@@ -1,0 +1,34 @@
+version: '3.8'
+
+# Define services
+services:
+
+  # Database Service (MySQL)
+  database:
+    image: mysql:8.0
+    ports:
+      - '3306:3306'
+    restart: always
+    container_name: database
+    environment:
+      MYSQL_DATABASE: paging_sorting_demo
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - paging-sorting-db:/var/lib/mysql
+
+  # phpmyadmin panel
+  phpmyadmin:
+    image: phpmyadmin
+    depends_on:
+      - database
+    restart: always
+    environment:
+      PMA_HOST: database
+    ports:
+      - '8090:80'
+
+# Volumes
+volumes:
+  paging-sorting-db:
